@@ -4,12 +4,16 @@ const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+
+require('dotenv').config();
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
 
 // Connect to MongoDB (local)
-mongoose.connect('mongodb://localhost:27017/todoapp', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // User schema
 const userSchema = new mongoose.Schema({
@@ -39,8 +43,9 @@ app.post('/login', async (req, res) => {
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) return res.status(400).json({ error: 'Invalid credentials' });
     // Create a token (for real apps, use a secret from env)
-    const token = jwt.sign({ username }, 'secretkey');
+    const token = jwt.sign({ username }, process.env.JWT_SECRET);
     res.json({ message: 'Login successful', token });
 });
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

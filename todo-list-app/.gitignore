@@ -1,10 +1,12 @@
+# Sensitive and system files to ignore
+
 # Node.js dependencies
 node_modules/
 
-# Environment variables
+# Environment variables and secrets
 .env
 
-# Logs
+# Log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -15,3 +17,9 @@ Thumbs.db
 
 # VS Code settings
 .vscode/
+
+# Build output (if you use any build tools)
+dist/
+build/
+out/
+coverage/
